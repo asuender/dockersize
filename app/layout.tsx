@@ -29,10 +29,10 @@ export default function RootLayout({
               Next.js
               {' '}
             </a>
-            and hosted with
-            <a href='https://pages.github.com/' className='text-blue-500 hover:text-blue-600'>
+            and
+            <a href='https://vercel.com/' className='text-blue-500 hover:text-blue-600'>
               {' '}
-              GitHub Pages
+              Vercel
             </a>
             .
           </p>

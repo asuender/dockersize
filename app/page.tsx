@@ -45,7 +45,7 @@ export default function Home() {
       <p className='text-gray-500'>A simple tool to get docker image sizes.</p>
 
       <form className='mt-4 mb-1' onSubmit={getImages}>
-        <input type='text' className='w-full rounded-md' value={input} onChange={(e) => setInput(e.target.value)} placeholder='Enter your docker image here' autoFocus required />
+        <input type='text' className='w-full rounded-md' value={input} onChange={(e) => setInput(e.target.value)} placeholder='e.g. ubuntu, mysql...' autoFocus required />
       </form>
 
       <div className='output overflow-y-auto'>

@@ -24,7 +24,7 @@ export default function RootLayout({
             </a>
             .
             Created with
-            <a href='nextjs.org' className='text-blue-500 hover:text-blue-600'>
+            <a href='https://nextjs.org' className='text-blue-500 hover:text-blue-600'>
               {' '}
               Next.js
               {' '}

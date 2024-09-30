@@ -9,6 +9,7 @@ import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/16/solid";
 
 interface ImageInfo {
   is_official_image: boolean;
+  hub_url: string;
 }
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [tags, setTags] = useState<any[] | null>([]);
   const [info, setInfo] = useState<ImageInfo>({
     is_official_image: false,
+    hub_url: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -75,7 +77,7 @@ export default function Home() {
         </button>
       </form>
 
-      <div className="flex justify-between py-3">
+      <div className="flex justify-between py-2">
         {info?.is_official_image ? (
           <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
             Official Image
@@ -84,14 +86,18 @@ export default function Home() {
           <span />
         )}
 
-        <a
-          href="#"
-          className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
-          target="_blank"
-        >
-          View on Docker Hub
-          <ArrowUpRightIcon className="w-6" />
-        </a>
+        {info?.hub_url ? (
+          <a
+            href={info?.hub_url}
+            className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
+            target="_blank"
+          >
+            View on Docker Hub
+            <ArrowUpRightIcon className="w-6" />
+          </a>
+        ) : (
+          <span />
+        )}
       </div>
 
       <div className="output overflow-y-auto pr-2">

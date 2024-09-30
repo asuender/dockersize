@@ -5,11 +5,18 @@ import prettyBytes from "pretty-bytes";
 import { useState } from "react";
 import Loading from "./loading";
 
-import { ArrowRightIcon } from "@heroicons/react/16/solid";
+import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/16/solid";
+
+interface ImageInfo {
+  is_official_image: boolean;
+}
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState<any[] | null>([]);
+  const [info, setInfo] = useState<ImageInfo>({
+    is_official_image: false,
+  });
   const [loading, setLoading] = useState(false);
 
   async function getImages(event: any) {
@@ -28,10 +35,14 @@ export default function Home() {
       setTags(null);
     }
 
-    const res = await fetch(`/api/images/${repository}/${digest}`);
-    const data = await res.json();
+    let res = await fetch(`/api/images/tags/${repository}/${digest}`);
+    let _tags = await res.json();
 
-    setTags(data?.results);
+    res = await fetch(`/api/images/info/${repository}/${digest}`);
+    let _info = await res.json();
+
+    setTags(_tags?.results);
+    setInfo(_info);
     setLoading(false);
   }
 
@@ -63,6 +74,25 @@ export default function Home() {
           <ArrowRightIcon className="w-9 h-full text-slate-500 dark:text-white" />
         </button>
       </form>
+
+      <div className="flex justify-between py-3">
+        {info?.is_official_image ? (
+          <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+            Official Image
+          </span>
+        ) : (
+          <span />
+        )}
+
+        <a
+          href="#"
+          className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
+          target="_blank"
+        >
+          View on Docker Hub
+          <ArrowUpRightIcon className="w-6" />
+        </a>
+      </div>
 
       <div className="output overflow-y-auto pr-2">
         {loading ? (

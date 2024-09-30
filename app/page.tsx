@@ -5,6 +5,8 @@ import prettyBytes from "pretty-bytes";
 import { useState } from "react";
 import Loading from "./loading";
 
+import { ArrowRightIcon } from "@heroicons/react/16/solid";
+
 export default function Home() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState<any[] | null>([]);
@@ -43,19 +45,26 @@ export default function Home() {
         A simple tool to get docker image sizes.
       </p>
 
-      <form className="mt-4 mb-1" onSubmit={getImages}>
+      <form className="flex items-stretch mt-4 mb-1" onSubmit={getImages}>
         <input
           type="text"
-          className="w-full rounded-md font-bold dark:text-slate-200 dark:placeholder:text-slate-300 dark:bg-slate-600"
+          className="w-full h-max border-2 rounded-lg font-bold dark:text-slate-200 dark:placeholder:text-slate-300 dark:bg-slate-600"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="e.g. ubuntu, mysql..."
           autoFocus
           required
         />
+
+        <button
+          type="submit"
+          className="border-solid border-2 rounded-lg border-slate-500 dark:bg-slate-600 ml-2 px-1"
+        >
+          <ArrowRightIcon className="w-9 h-full text-slate-500 dark:text-white" />
+        </button>
       </form>
 
-      <div className="output overflow-y-auto">
+      <div className="output overflow-y-auto pr-2">
         {loading ? (
           <Loading />
         ) : (

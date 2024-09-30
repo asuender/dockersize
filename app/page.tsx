@@ -77,7 +77,7 @@ export default function Home() {
         </button>
       </form>
 
-      <div className="flex justify-between py-2">
+      <div className="flex justify-between py-3">
         {info?.is_official_image ? (
           <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
             Official Image
@@ -100,7 +100,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="output overflow-y-auto pr-2">
+      <div className="output overflow-y-auto pl-1 pr-2">
         {loading ? (
           <Loading />
         ) : (

@@ -5,16 +5,16 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-family: 'Fira Code', monospace;
-    font-size: 18px;
-  }
+    html {
+        font-family: "Fira Code", monospace;
+        font-size: 18px;
+    }
 }
 
 main {
-  width: 600px;
+    width: 600px;
 }
 
 .output {
-  height: 300px;
+    height: 300px;
 }

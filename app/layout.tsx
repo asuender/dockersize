@@ -1,4 +1,5 @@
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
 export const metadata = {
   title: "dockersize",
@@ -13,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark dark:bg-slate-800">
       <body className="flex items-center justify-center w-screen h-screen p-3">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
 
         <footer className="fixed bottom-0 left-0 w-full text-center text-gray-500 py-2">
           <p>

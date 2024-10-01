@@ -73,7 +73,7 @@ export default function Home() {
         <h1 className="text-4xl lg:text-6xl">dockersize</h1>
 
         <p className="text-gray-500 dark:text-slate-400">
-          A simple tool to get docker image sizes.
+          A simple tool to get Docker image sizes.
         </p>
 
         <form className="flex items-stretch mt-4 mb-1" onSubmit={getImages}>

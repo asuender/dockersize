@@ -5,6 +5,7 @@ import prettyBytes from "pretty-bytes";
 import { useState } from "react";
 import Loading from "./loading";
 
+import { motion } from "framer-motion";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/16/solid";
 
 interface ImageInfo {
@@ -50,63 +51,70 @@ export default function Home() {
 
   return (
     <main>
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5 },
+        }}
+      >
         <h1 className="text-4xl lg:text-6xl dark:text-white">dockersize</h1>
-      </div>
 
-      <p className="text-gray-500 dark:text-slate-400">
-        A simple tool to get docker image sizes.
-      </p>
+        <p className="text-gray-500 dark:text-slate-400">
+          A simple tool to get docker image sizes.
+        </p>
 
-      <form className="flex items-stretch mt-4 mb-1" onSubmit={getImages}>
-        <input
-          type="text"
-          className="w-full h-max border-2 rounded-lg font-bold dark:text-slate-200 dark:placeholder:text-slate-300 dark:bg-slate-600"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="e.g. ubuntu, mysql..."
-          autoFocus
-          required
-        />
+        <form className="flex items-stretch mt-4 mb-1" onSubmit={getImages}>
+          <input
+            type="text"
+            className="w-full h-max border-2 rounded-lg font-bold dark:text-slate-200 dark:placeholder:text-slate-300 dark:bg-slate-600"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="e.g. ubuntu, mysql..."
+            autoFocus
+            required
+          />
 
-        <button
-          type="submit"
-          className="border-solid border-2 rounded-lg border-slate-500 dark:bg-slate-600 ml-2 px-1"
-        >
-          <ArrowRightIcon className="w-9 h-full text-slate-500 dark:text-white" />
-        </button>
-      </form>
-
-      <div className="flex justify-between py-3">
-        {info?.is_official_image ? (
-          <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
-            Official Image
-          </span>
-        ) : (
-          <span />
-        )}
-
-        {info?.hub_url ? (
-          <a
-            href={info?.hub_url}
-            className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
-            target="_blank"
+          <button
+            type="submit"
+            className="border-solid border-2 rounded-lg border-slate-500 dark:bg-slate-600 ml-2 px-1"
           >
-            View on Docker Hub
-            <ArrowUpRightIcon className="w-6" />
-          </a>
-        ) : (
-          <span />
-        )}
-      </div>
+            <ArrowRightIcon className="w-9 h-full text-slate-500 dark:text-white" />
+          </button>
+        </form>
 
-      <div className="output overflow-y-auto pl-1 pr-2">
-        {loading ? (
-          <Loading />
-        ) : (
-          tags?.map((tag) => <DockerTag key={tag.id} tag={tag} />)
-        )}
-      </div>
+        <div className="flex justify-between py-3">
+          {info?.is_official_image ? (
+            <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+              Official Image
+            </span>
+          ) : (
+            <span />
+          )}
+
+          {info?.hub_url ? (
+            <a
+              href={info?.hub_url}
+              className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
+              target="_blank"
+            >
+              View on Docker Hub
+              <ArrowUpRightIcon className="w-6" />
+            </a>
+          ) : (
+            <span />
+          )}
+        </div>
+
+        <div className="output overflow-y-auto pl-1 pr-2">
+          {loading ? (
+            <Loading />
+          ) : (
+            tags?.map((tag) => <DockerTag key={tag.id} tag={tag} />)
+          )}
+        </div>
+      </motion.div>
     </main>
   );
 }

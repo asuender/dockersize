@@ -7,11 +7,14 @@ import Loading from "./loading";
 
 import { motion } from "framer-motion";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/16/solid";
+import { log } from "console";
 
 interface ImageInfo {
   is_official_image: boolean;
   hub_url: string;
 }
+
+const common_archs = ["amd64", "arm", "arm64"];
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -20,11 +23,18 @@ export default function Home() {
     is_official_image: false,
     hub_url: "",
   });
+  const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [onlyCommonArchs, setOnlyCommonArchs] = useState(false);
+
+  const checkArchsHandler = () => {
+    setOnlyCommonArchs(!onlyCommonArchs);
+  };
 
   async function getImages(event: any) {
     event.preventDefault();
     setLoading(true);
+    setLoaded(false);
 
     let repository = "library",
       digest;
@@ -47,6 +57,7 @@ export default function Home() {
     setTags(_tags?.results);
     setInfo(_info);
     setLoading(false);
+    setLoaded(true);
   }
 
   return (
@@ -59,7 +70,7 @@ export default function Home() {
           transition: { duration: 0.5 },
         }}
       >
-        <h1 className="text-4xl lg:text-6xl dark:text-white">dockersize</h1>
+        <h1 className="text-4xl lg:text-6xl">dockersize</h1>
 
         <p className="text-gray-500 dark:text-slate-400">
           A simple tool to get docker image sizes.
@@ -84,34 +95,55 @@ export default function Home() {
           </button>
         </form>
 
-        <div className="flex justify-between py-3">
-          {info?.is_official_image ? (
-            <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
-              Official Image
-            </span>
-          ) : (
-            <span />
-          )}
+        {loaded && (
+          <div className="flex justify-between py-3">
+            {info?.is_official_image ? (
+              <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+                Official Image
+              </span>
+            ) : (
+              <span />
+            )}
 
-          {info?.hub_url ? (
-            <a
-              href={info?.hub_url}
-              className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
-              target="_blank"
-            >
-              View on Docker Hub
-              <ArrowUpRightIcon className="w-6" />
-            </a>
-          ) : (
-            <span />
-          )}
-        </div>
+            {info?.hub_url && (
+              <a
+                href={info?.hub_url}
+                className="flex items-end text-blue-500 dark:text-blue-400 hover:underline"
+                target="_blank"
+              >
+                View on Docker Hub
+                <ArrowUpRightIcon className="w-6" />
+              </a>
+            )}
+          </div>
+        )}
+
+        {loaded && (
+          <div className="flex items-center pl-0.5">
+            <input
+              type="checkbox"
+              name="only_common_archs"
+              checked={onlyCommonArchs}
+              onChange={checkArchsHandler}
+              className="rounded-lg dark:bg-slate-300 mr-2"
+            />
+            <label htmlFor="only_common_archs" className="dark:text-slate-300">
+              Show only common architectures
+            </label>
+          </div>
+        )}
 
         <div className="output overflow-y-auto pl-1 pr-2">
           {loading ? (
             <Loading />
           ) : (
-            tags?.map((tag) => <DockerTag key={tag.id} tag={tag} />)
+            tags?.map((tag) => (
+              <DockerTag
+                key={tag.id}
+                tag={tag}
+                onlyCommonArchs={onlyCommonArchs}
+              />
+            ))
           )}
         </div>
       </motion.div>
@@ -119,7 +151,7 @@ export default function Home() {
   );
 }
 
-function DockerTag({ tag }: any) {
+function DockerTag({ tag, onlyCommonArchs }: any) {
   const { name, full_size, images } = tag || {};
 
   return (
@@ -135,22 +167,26 @@ function DockerTag({ tag }: any) {
         </span>
       </div>
 
-      {images?.map((image: any) => (
-        <div
-          key={image.digest}
-          className="flex flex-row justify-between dark:text-slate-300"
-        >
-          <span>
-            {image.os}/{image.architecture}
-          </span>
-          <span>
-            {prettyBytes(image.size, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </span>
-        </div>
-      ))}
+      {images
+        ?.filter((image: any) => {
+          return common_archs.includes(image.architecture) || !onlyCommonArchs;
+        })
+        .map((image: any) => (
+          <div
+            key={image.digest}
+            className="flex flex-row justify-between dark:text-slate-300"
+          >
+            <span>
+              {image.os}/{image.architecture}
+            </span>
+            <span>
+              {prettyBytes(image.size, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+        ))}
     </div>
   );
 }

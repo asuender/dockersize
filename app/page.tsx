@@ -57,7 +57,7 @@ export default function Home() {
     setTags(_tags?.results);
     setInfo(_info);
     setLoading(false);
-    setLoaded(true);
+    setLoaded(_tags?.results != null);
   }
 
   return (

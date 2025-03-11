@@ -23,6 +23,7 @@ export async function getImageTags({
     const data = await res.json();
     return data.results as ImageTag[];
   } catch (error) {
+    console.error(error);
     throw new Error('Failed to fetch image tags');
   }
 }

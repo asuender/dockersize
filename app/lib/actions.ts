@@ -6,12 +6,6 @@ export type ImageTag = {
   full_size: number;
 };
 
-export type FetchParams = {
-  repository?: string;
-  digest: string;
-};
-
-
 export async function getImageTags(image: string): Promise<ImageTag[]> {
   try {
     const res = await fetch(

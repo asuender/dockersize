@@ -51,7 +51,7 @@ export default function Home() {
           <div className="max-h-[300px] overflow-y-auto">
             <div className="flex justify-between">
               <span className="font-bold">Tag</span>
-              <span className="font-bold">Size</span>
+              <span className="font-bold">Compressed size</span>
             </div>
             {data.map((tag: ImageTag) => (
               <DockerTag key={tag.id} {...tag} />

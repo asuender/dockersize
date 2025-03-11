@@ -7,18 +7,15 @@ export type ImageTag = {
 };
 
 export type FetchParams = {
-  digest?: string;
-  image: string;
+  repository?: string;
+  digest: string;
 };
 
 
-export async function getImageTags({
-  digest = 'library',
-  image,
-}: FetchParams): Promise<ImageTag[]> {
+export async function getImageTags(image: string): Promise<ImageTag[]> {
   try {
     const res = await fetch(
-      `https://hub.docker.com/v2/repositories/${digest}/${image}/tags/`
+      `https://hub.docker.com/v2/repositories/${image}/tags/`
     );
     const data = await res.json();
     return data.results as ImageTag[];

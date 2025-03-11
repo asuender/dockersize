@@ -5,16 +5,22 @@ import { ImageTag, getImageTags } from '@/app/lib/actions';
 import DockerTag from '@/app/components/DockerTag';
 import SubmitButton from '@/app/components/SubmitButton';
 
+const CUSTOM_REPO_REGEX = /[a-z\d]{4,30}\/[a-zA-Z\d][a-zA-Z\d_.-]{0,254}/;
+
 export default function Home() {
   const [data, setData] = useState<ImageTag[] | null>(null);
 
+  function usesCustomRepo(imageName: string) {
+    return CUSTOM_REPO_REGEX.test(imageName);
+  }
+
   async function handleFormSubmit(formData: FormData) {
+    const userInput = formData.get('image-name') as string;
+    const imageName = usesCustomRepo(userInput) ? userInput : `library/${userInput}`;
+
     try {
-      const fetchParams = {
-        image: formData.get('image-name') as string,
-      };
-      const res = (await getImageTags(fetchParams)) || [];
-      setData(res);
+      const tags = await getImageTags(imageName);
+      setData(tags || []);
     } catch (error) {
       console.error(error);
     }

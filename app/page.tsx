@@ -34,9 +34,7 @@ export default function Home() {
           <SubmitButton />
         </form>
 
-        {isPending && <p>Loading...</p>}
-
-        {state.data ? (
+        {isPending ? <p>Loading...</p> : state.data ? (
           <div className="max-h-[300px] overflow-y-auto">
             <div className="flex justify-between">
               <span className="font-bold">Tag</span>

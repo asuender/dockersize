@@ -61,7 +61,7 @@ export async function getImageData(
     ]);
 
     return { data: { name, tags } };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error) {
+    return { error: (error as Error).message };
   }
 }

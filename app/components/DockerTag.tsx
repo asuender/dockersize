@@ -1,9 +1,9 @@
 'use client';
 
-import { ImageTag } from '@/app/lib/actions';
+import { DockerImageTag } from '@/app/lib/actions';
 import prettyBytes from 'pretty-bytes';
 
-export default function DockerTag({ name, full_size }: ImageTag) {
+export default function DockerTag({ name, full_size }: DockerImageTag) {
   return (
     <div className='flex justify-between'>
       <span>{name}</span>

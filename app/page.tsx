@@ -11,7 +11,7 @@ import SubmitButton from '@/app/components/SubmitButton';
 
 export default function Home() {
   const initialState: State = { };
-  const [state, formAction] = useActionState(getImageData, initialState);
+  const [state, formAction, isPending] = useActionState(getImageData, initialState);
 
   return (
     <main className="flex justify-center items-center min-h-screen">
@@ -33,6 +33,8 @@ export default function Home() {
           />
           <SubmitButton />
         </form>
+
+        {isPending && <p>Loading...</p>}
 
         {state.data ? (
           <div className="max-h-[300px] overflow-y-auto">
